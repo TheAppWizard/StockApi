@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock API Documentation</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .endpoint {
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .get { background-color: #e3f2fd; color: #1565c0; }
+        .post { background-color: #e8f5e9; color: #2e7d32; }
+        .put { background-color: #fff3e0; color: #ef6c00; }
+        .delete { background-color: #ffebee; color: #c62828; }
+        
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        h1 { color: #2196f3; }
+        h2 { color: #1976d2; margin-top: 30px; }
+        .url { font-family: monospace; color: #666; }
+        .description { margin: 10px 0; }
+        .response {
+            margin-top: 10px;
+            border-left: 4px solid #2196f3;
+            padding-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Stock API Documentation</h1>
+    <p>This documentation provides examples of how to interact with the Stock API endpoints using curl commands.</p>
+
+    <div class="endpoint">
+        <h2>
+            <span class="method get">GET</span>
+            Get Stocks by User Code
+        </h2>
+        <div class="url">/stocks/{user_code}</div>
+        <div class="description">Retrieves all stock entries for a specific user code.</div>
+        <pre>curl -X GET "http://localhost:5000/stocks/USER123" \
+    -H "Content-Type: application/json"</pre>
+        <div class="response">
+            <strong>Example Response:</strong>
+            <pre>{
+    "status": "success",
+    "count": 1,
+    "data": [{
+        "user_code": "USER123",
+        "symbol": "AAPL",
+        "series": "EQ",
+        "date": "2024-01-01",
+        "prev_close": 180.5,
+        "open_price": 181.0,
+        "high_price": 182.5,
+        "low_price": 180.0,
+        "last_price": 182.0,
+        "close_price": 182.0,
+        "avg_price": 181.25,
+        "total_traded_qty": 1000000,
+        "turnover": 181250000,
+        "no_of_trades": 50000,
+        "del_qty": 800000,
+        "del_to_trade_per": 80.0
+    }]
+}</pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <h2>
+            <span class="method post">POST</span>
+            Create Stock Entry
+        </h2>
+        <div class="url">/stock/{user_code}</div>
+        <div class="description">Creates a new stock entry for a specific user code.</div>
+        <pre>curl -X POST "http://localhost:5000/stock/USER123" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "symbol": "AAPL",
+        "series": "EQ",
+        "date": "2024-01-01",
+        "prev_close": 180.5,
+        "open_price": 181.0,
+        "high_price": 182.5,
+        "low_price": 180.0,
+        "last_price": 182.0,
+        "close_price": 182.0,
+        "avg_price": 181.25,
+        "total_traded_qty": 1000000,
+        "turnover": 181250000,
+        "no_of_trades": 50000,
+        "del_qty": 800000,
+        "del_to_trade_per": 80.0
+    }'</pre>
+        <div class="response">
+            <strong>Example Response:</strong>
+            <pre>{
+    "status": "success",
+    "message": "Stock data created successfully",
+    "data": {
+        "user_code": "USER123",
+        "symbol": "AAPL",
+        ...
+    }
+}</pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <h2>
+            <span class="method put">PUT</span>
+            Update Stock Entries
+        </h2>
+        <div class="url">/stock/{user_code}</div>
+        <div class="description">Updates all stock entries for a specific user code.</div>
+        <pre>curl -X PUT "http://localhost:5000/stock/USER123" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "symbol": "AAPL",
+        "close_price": 183.0,
+        "last_price": 183.0
+    }'</pre>
+        <div class="response">
+            <strong>Example Response:</strong>
+            <pre>{
+    "status": "success",
+    "message": "Successfully updated 1 records for user_code: USER123",
+    "data": [{
+        "user_code": "USER123",
+        "symbol": "AAPL",
+        ...
+    }]
+}</pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <h2>
+            <span class="method delete">DELETE</span>
+            Delete Stock Entries
+        </h2>
+        <div class="url">/stock/{user_code}</div>
+        <div class="description">Deletes all stock entries for a specific user code.</div>
+        <pre>curl -X DELETE "http://localhost:5000/stock/USER123" \
+    -H "Content-Type: application/json"</pre>
+        <div class="response">
+            <strong>Example Response:</strong>
+            <pre>{
+    "status": "success",
+    "message": "Successfully deleted 1 records for user_code: USER123"
+}</pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <h2>Error Responses</h2>
+        <div class="description">Example error responses you might encounter:</div>
+        <div class="response">
+            <strong>Record Not Found:</strong>
+            <pre>{
+    "status": "error",
+    "message": "No records found for user_code: USER123"
+}</pre>
+        </div>
+        <div class="response">
+            <strong>Missing Required Fields:</strong>
+            <pre>{
+    "status": "error",
+    "message": "Missing required fields: ['symbol', 'series', ...]"
+}</pre>
+        </div>
+        <div class="response">
+            <strong>Server Error:</strong>
+            <pre>{
+    "status": "error",
+    "error": "Internal server error message"
+}</pre>
+        </div>
+    </div>
+</body>
+</html>
